@@ -1,0 +1,8 @@
+#env files
+*.env
+
+#config file
+config.php
+
+#startbase file 
+startbase.php
