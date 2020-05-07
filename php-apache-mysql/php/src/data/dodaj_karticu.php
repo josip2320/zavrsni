@@ -46,22 +46,57 @@
         }
         else
         {
-            $zaposlenik=trim($_POST['zaposlenik']);
-            $zaposlenik=$link->real_escape_string($zaposlenik);
+            $sql="SELECT Zaposlenici.ZaposlenikID, Kartice.KarticaID FROM Zaposlenici INNER JOIN Kartice ON Zaposlenici.ZaposlenikID=Kartice.ZaposlenikID WHERE Zaposlenici.ZaposlenikID= ?";
+            if($stmt=mysqli_prepare($link,$sql))
+            {
+                mysqli_stmt_bind_param($stmt,"s",$param_zaposlenik);
+                $param_zaposlenik=trim($_POST["zaposlenik"]);
+                $param_zaposlenik = $link->real_escape_string($param_zaposlenik);
+                
+                if(mysqli_stmt_execute($stmt))
+                {
+                    mysqli_stmt_store_result($stmt);
+
+                    if(mysqli_stmt_num_rows($stmt)==1)
+                    {
+                        $zaposlenik_err= "Zaposlenik već posjeduje karticu";
+                    }
+                    else
+                    {
+                        $zaposlenik=trim($_POST['zaposlenik']);
+                        $zaposlenik=$link->real_escape_string($zaposlenik);
+                    }
+                }
+            }
+            
         }
         if(empty(trim($_POST['passcode'])))
         {
             $passcode_err ="Unesite passcode";
         }
-        elseif(strlen(trim($_POST['passcode']))!=4)
+        else if(strlen(trim($_POST['passcode']))!=4)
         {
             $passcode_err="Passcode mora imati 4 znamenke";
         }
-        else
-        {
-            $passcode=trim($_POST['passcode']);
-            
+        else{
+            $passcode_try = trim($_POST['passcode']);
+            $passcode_param_error="";
+            for($i=0;$i<strlen($passcode_try);$i++)
+            {
+                if(($passcode_try[$i]>='0' && $passcode_try[$i]<='9')===false)
+                {
+                    $passcode_param_error='error1';
+                }
+                
+            }
+            if($passcode_param_error==='error1')
+            {
+                $passcode_err="Passcode može sadržavati samo znamenke od 0 do 9";
+            }
+           
         }
+        
+        
 
         if(empty($uid_kartice_err) && empty($zaposlenik_err) && empty($passcode_err))
         {

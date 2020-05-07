@@ -13,7 +13,7 @@ byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 175);
 
-IPAddress serv(192,168,1,15);
+IPAddress serv(192,168,1,11);
 #define RST_PIN_RFID 5 
 #define SS_PIN_RFID 49 
 #define SS_PIN_ETHERNET 53
@@ -87,6 +87,7 @@ String check_card(String uid_kartice)
         client.println(ispis.length());
         client.println();
         client.print(ispis);
+        
       
         delay(500);
         String s;
@@ -94,12 +95,12 @@ String check_card(String uid_kartice)
        {
         char c = client.read();
         s += c;
-        Serial.print(c);
+        
       
         
        }
        s2= s.substring(s.length()-1,s.length());
-       Serial.println(s2);
+       
     }
      else {
       s2="4";
@@ -172,12 +173,12 @@ String password_verify(String uid_kartice,char * password)
        {
         char c = client.read();
         s += c;
-        Serial.print(c);
+        
       
         
        }
        s2= s.substring(s.length()-1,s.length());
-       Serial.println(s2);
+       
     }       
         
      else {
@@ -188,8 +189,10 @@ String password_verify(String uid_kartice,char * password)
   return s2;
 }
 
-void ulaz_izlaz(String uid_kartice)
+void ulaz(String uid_kartice)
 {
+  String s2;
+  String s;
   digitalWrite(SS_PIN_RFID,HIGH);
   digitalWrite(SS_PIN_ETHERNET,LOW);
   
@@ -198,7 +201,7 @@ void ulaz_izlaz(String uid_kartice)
   {
     String ispis="uid_kartice=" + uid_kartice;
     Serial.println("connected");
-    client.println("POST /data/ulaz_izlaz.php HTTP/1.1");
+    client.println("POST /data/ulaz.php HTTP/1.1");
     client.print("Host: ");
     client.println(serv);
     client.println("Content-Type: application/x-www-form-urlencoded");
@@ -207,6 +210,16 @@ void ulaz_izlaz(String uid_kartice)
     client.println();
     client.print(ispis);
     delay(500);
+     while(client.available())
+       {
+        char c = client.read();
+        s += c;
+        
+      
+        
+       }
+       s2= s.substring(s.length()-1,s.length());
+       
 
   }
   else {
@@ -401,8 +414,7 @@ void loop()
    
     String check= check_card(kod);
     
-    Serial.print("Lozinka: ");
-    Serial.println(check);
+   
     if(check=="0")
     {
 
@@ -431,7 +443,7 @@ void loop()
       {
         lcd.clear();
         lcd.print("    Dovidenja");
-        ulaz_izlaz(kod);
+        
         tone(PIEZO_PIN,1300,500);
       delay(2000);
         
@@ -551,7 +563,7 @@ void loop()
         lcd.setCursor(0,1);
         lcd.print("   dozvoljen");
         
-        ulaz_izlaz(kod);
+        ulaz(kod);
         tone(PIEZO_PIN,1300,500);
         delay(3000);
         lcd.clear();

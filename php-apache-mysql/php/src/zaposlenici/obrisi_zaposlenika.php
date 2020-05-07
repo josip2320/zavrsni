@@ -91,6 +91,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <span class="fas fa-user-minus"></span>
         Obriši zaposlenika
     </a>
+    <br>
+    <br>
+    <a href="prikaz_prisutnih_zaposlenika.php" class="btn btn-primary btn-lg">
+       Prikaži prisutne zaposlenike
+    </a>
+    <a href="prikaz_neprisutnih_zaposleniika.php" class="btn btn-danger btn-lg">
+     Prikaži zaposlenike koje nisu na poslu
+    </a>
     <form action="" method="post">
         <div class="form-group">
             <label for="select">Izaberi zaposlenika</label>

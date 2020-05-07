@@ -92,6 +92,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
         <span class="fas fa-user-minus"></span>
         Obriši zaposlenika
     </a>
+    <br>
+    <br>
+    <a href="prikaz_prisutnih_zaposlenika.php" class="btn btn-primary btn-lg">
+       Prikaži prisutne zaposlenike
+    </a>
+    <a href="prikaz_neprisutnih_zaposleniika.php" class="btn btn-danger btn-lg">
+     Prikaži zaposlenike koje nisu na poslu
+    </a>
     <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
@@ -99,6 +107,7 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
           <th scope="col">Ime</th>
           <th scope="col">Prezime</th>
           <th scope="col">OIB</th>
+          <th scope ="col">Prisutnost</th>
         </tr>
       </thead>
       <tbody>
@@ -118,6 +127,14 @@ if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
               echo "<td>" . $row['Ime'] . "</td>";
               echo "<td>" . $row['Prezime'] . "</td>";
               echo "<td>" . $row['OIB'] . "</td>";
+              if($row['prisutan']=="1")
+              {
+                  echo '<td>Prisutan</td>';
+              }
+              else
+              {
+                echo '<td class="bg-danger">Nije prisutan</td>';
+              }
               echo "</tr>";
             }
           }

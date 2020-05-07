@@ -37,7 +37,28 @@
         {
             $oib_err="Unesite OIB";
         }
-        else
+        else if(strlen(trim($_POST["oib"]))!=11)
+        {
+            $oib_err="OIB mora sadržavati 11 znamenki";
+        }
+        else 
+        {
+            $oib_try = trim($_POST['oib']);
+            $passcode_param_error="";
+            for($i=0;$i<strlen($oib_try);$i++)
+            {
+                if(($oib_try[$i]>='0' && $oib_try[$i]<='9')===false)
+                {
+                    $oib_param_err='error1';
+                }
+                
+            }
+            if($oib_param_err==='error1')
+            {
+                $oib_err="Passcode može sadržavati samo znamenke od 0 do 9";
+            }
+        }
+        if(empty($oib_err))
         {
             $sql="SELECT ZaposlenikID FROM Zaposlenici WHERE OIB = ?";
             
@@ -68,7 +89,7 @@
 
         if(empty($ime_err) && empty($prezime_err) && empty($oib_err))
         {
-            $sql = "INSERT INTO Zaposlenici(Ime,Prezime,OIB) VALUES (?,?,?)";
+            $sql = "INSERT INTO Zaposlenici(Ime,Prezime,OIB,prisutan) VALUES (?,?,?,false)";
 
             if($stmt=mysqli_prepare($link,$sql))
             {
