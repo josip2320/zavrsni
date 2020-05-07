@@ -191,8 +191,7 @@ String password_verify(String uid_kartice,char * password)
 
 void ulaz(String uid_kartice)
 {
-  String s2;
-  String s;
+ 
   digitalWrite(SS_PIN_RFID,HIGH);
   digitalWrite(SS_PIN_ETHERNET,LOW);
   
@@ -210,17 +209,7 @@ void ulaz(String uid_kartice)
     client.println();
     client.print(ispis);
     delay(500);
-     while(client.available())
-       {
-        char c = client.read();
-        s += c;
-        
-      
-        
-       }
-       s2= s.substring(s.length()-1,s.length());
-       
-
+     
   }
   else {
      
@@ -253,7 +242,6 @@ String izlaz_check(String uid_kartice)
     {
       char c = client.read();
       s += c;
-      Serial.print(c);
     }
     s2= s.substring(s.length()-1,s.length());
     
@@ -417,7 +405,7 @@ void loop()
    
     if(check=="0")
     {
-
+        Serial.println("Nepoznata kartica");
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("    Nepoznata");
@@ -437,10 +425,11 @@ void loop()
     else if(check=="1")
     {
       
-     
+      Serial.println("Kartica prepoznata");
       String provjera = izlaz_check(kod);
       if(provjera=="1")
       {
+        Serial.println("Ovo je izlazak");
         lcd.clear();
         lcd.print("    Dovidenja");
         
@@ -456,7 +445,7 @@ void loop()
       lcd.setCursor(0,1);
       lcd.print( "   prepoznata");
       
-      
+      Serial.print("Unos lozinke");
       tone(PIEZO_PIN,1300,500);
       delay(2000);  
       lcd.clear();
@@ -469,6 +458,7 @@ void loop()
     }
     else if (check=="2")
     {
+      Serial.println("Blokirana kartica");
       lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("    Blokirana");
@@ -487,6 +477,7 @@ void loop()
     }
     else if (check=="4")
     {
+      Serial.println("Neuspjesno povezivanje");
       lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("    Ne mogu se");
@@ -555,6 +546,7 @@ void loop()
       String pass_check = password_verify(kod,keyPass);
       if(pass_check=="1")
       {
+        Serial.println("Tocna lozinka");
         lcd.clear();
         lcd.print("Lozinka tocna");
         delay(900);
@@ -564,6 +556,7 @@ void loop()
         lcd.print("   dozvoljen");
         
         ulaz(kod);
+        Serial.println("Ulaz unijet u bazu podataka");
         tone(PIEZO_PIN,1300,500);
         delay(3000);
         lcd.clear();
@@ -574,6 +567,7 @@ void loop()
       }
       else if (pass_check==4)
      {
+      Serial.print("Neuspjesno povezivanje");
        lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("    Ne mogu se");
@@ -594,7 +588,7 @@ void loop()
      }
       else 
       {
-        
+        Serial.println("Netocna lozinka");
         lcd.clear();
         lcd.print("Netocna lozinka");
         wrong_pass(kod);
@@ -612,6 +606,7 @@ void loop()
     }
     else
     {
+      Serial.println("3 neuspjensa unosa lozinke. Kartica blokirana");
        i=0;
         block_card(kod);
         lcd.clear();

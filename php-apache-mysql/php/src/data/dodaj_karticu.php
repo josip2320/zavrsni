@@ -93,6 +93,11 @@
             {
                 $passcode_err="Passcode može sadržavati samo znamenke od 0 do 9";
             }
+            else
+            {
+                $passcode= trim($_POST["passcode"]);
+                $passcode= $link->real_escape_string($passcode);
+            }
            
         }
         
