@@ -55,7 +55,7 @@
             }
             if($oib_param_err==='error1')
             {
-                $oib_err="Passcode može sadržavati samo znamenke od 0 do 9";
+                $oib_err="OIB može sadržavati samo znamenke od 0 do 9";
             }
         }
         if(empty($oib_err))

@@ -9,17 +9,17 @@
 
 int retry_count=0;
 //inicilizacija postavki ethernet shielda
-byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
 IPAddress ip(192, 168, 1, 175);
-
 IPAddress serv(192,168,1,11);
+EthernetClient client; 
+
 #define RST_PIN_RFID 5 
 #define SS_PIN_RFID 49 
 #define SS_PIN_ETHERNET 53
 #define PIEZO_PIN 40
-EthernetClient client; 
-bool alreadyConnected = false;
+
+
 MFRC522 mfrc522(SS_PIN_RFID, RST_PIN_RFID);  // Create MFRC522 instance
 boolean RFIDMode=true;
 String getID(){

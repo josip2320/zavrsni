@@ -1,14 +1,14 @@
 <?php
-// Initialize the session
+
 session_start();
  
-// Unset all of the session variables
+// Postavljanje početnih vrijednosti sesije
 $_SESSION = array();
  
-// Destroy the session.
+// Uništavanje sesije
 session_destroy();
  
-// Redirect to login page
+// Preusmjeravanje na stranicu za prijavu
 header("location: login.php");
 exit;
 ?>
